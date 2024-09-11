@@ -1,1 +1,961 @@
+//target
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
+public class Target : MonoBehaviour
+{
+    Material m_material;
+
+    public float health = 50f;
+    public GameObject collectable;
+
+    public void TakeDamage(float amount)
+    {
+        health -= amount;
+        Debug.Log(health);
+
+        if(health <= 0f)
+        {
+            eatPickle();
+        }
+    }
+    void eatPickle()
+    {
+        Instantiate(collectable, gameObject.transform.position, Quaternion.identity);
+        m_material = GetComponent<Renderer>().material;
+        m_material.color = Color.red;
+
+        Destroy(gameObject);
+    }
+ 
+}
+//Throwing
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Throwing : MonoBehaviour
+{
+    public Camera fpsCam;
+    public GameObject prefab;
+    public Transform player;
+    public float speed = 5f;
+    private CharacterInput controls;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        transform.rotation = player.rotation;
+        transform.position = player.position;
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(controls.Player.Throw.triggered)
+        {
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.x = 
+            mousePos.y =
+
+
+           // Instantiate(prefab, transform.position, transform.rotation);
+           // Rigidbody r = GetComponent<Rigidbody>();
+
+           // r.AddForce(transform.up * speed);
+        }
+    }
+}
+//character input
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
+
+public partial class @CharacterInput : IInputActionCollection2, IDisposable
+{
+    public InputActionAsset asset { get; }
+    public @CharacterInput()
+    {
+        asset = InputActionAsset.FromJson(@"{
+    ""name"": ""CharacterInput"",
+    ""maps"": [
+        {
+            ""name"": ""Player"",
+            ""id"": ""e4373c41-0c4d-4f7f-bf73-7bb04270dc3d"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""aeb8e76a-c9e4-4040-9446-295dc4d625df"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""50132ee4-47ce-4ba4-a54b-75ec787c584b"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""95b86c27-10db-45cc-89e1-096031e614d1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""35916eed-2649-4f4a-9216-40d03b1e7a95"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shield"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e6f4d47-2669-41d3-be62-c498bdad8b79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""06ab757f-fca1-40df-bb23-6b12d6d2403f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a8a09e2-1ae0-468d-982d-9776c6629bc7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Stand"",
+                    ""type"": ""Button"",
+                    ""id"": ""0eda8713-38c7-4d27-a3ff-204b8d291120"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""213b0956-0f15-4f1e-b571-9f713ba99403"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e47493af-b454-48a2-ad0f-04f37877ea5e"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""74d3722e-5db5-4c58-98c0-3202c6e03263"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e096afa7-4dd8-4c2e-bc1e-207fbc39f1dc"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""645cdfdd-4549-46eb-9fd1-6e43ffb78d24"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""551131d7-efbc-4a71-95dd-85a29e448104"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd22c352-87c8-45ec-9b7a-295a08d5e7d0"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""853833c5-fa67-4b55-b68a-49c6a91717b0"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f304660-0d89-4b80-a087-9dd6cf7271d5"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8cad138-2b42-4a9d-af7b-a9bfd49e9fe3"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""10cbe165-7846-4e6f-9bbf-a0000eae43aa"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b568a917-bb0a-4144-8e63-161c1e898863"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shield"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71c553f8-ad73-4b50-8ac9-0188b984fc42"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d90f81f-f6d4-49e5-970b-9eece2dae87a"",
+                    ""path"": ""<Keyboard>/#(E)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f32e77c-c18f-4e9b-b782-e8b5b2c4eb4b"",
+                    ""path"": ""<Keyboard>/capsLock"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Stand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        }
+    ],
+    ""controlSchemes"": []
+}");
+        // Player
+        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
+        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        m_Player_Shield = m_Player.FindAction("Shield", throwIfNotFound: true);
+        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+        m_Player_Throw = m_Player.FindAction("Throw", throwIfNotFound: true);
+        m_Player_Stand = m_Player.FindAction("Stand", throwIfNotFound: true);
+    }
+
+    public void Dispose()
+    {
+        UnityEngine.Object.Destroy(asset);
+    }
+
+    public InputBinding? bindingMask
+    {
+        get => asset.bindingMask;
+        set => asset.bindingMask = value;
+    }
+
+    public ReadOnlyArray<InputDevice>? devices
+    {
+        get => asset.devices;
+        set => asset.devices = value;
+    }
+
+    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+    public bool Contains(InputAction action)
+    {
+        return asset.Contains(action);
+    }
+
+    public IEnumerator<InputAction> GetEnumerator()
+    {
+        return asset.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public void Enable()
+    {
+        asset.Enable();
+    }
+
+    public void Disable()
+    {
+        asset.Disable();
+    }
+    public IEnumerable<InputBinding> bindings => asset.bindings;
+
+    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+    {
+        return asset.FindAction(actionNameOrId, throwIfNotFound);
+    }
+    public int FindBinding(InputBinding bindingMask, out InputAction action)
+    {
+        return asset.FindBinding(bindingMask, out action);
+    }
+
+    // Player
+    private readonly InputActionMap m_Player;
+    private IPlayerActions m_PlayerActionsCallbackInterface;
+    private readonly InputAction m_Player_Movement;
+    private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Shoot;
+    private readonly InputAction m_Player_Shield;
+    private readonly InputAction m_Player_Crouch;
+    private readonly InputAction m_Player_Throw;
+    private readonly InputAction m_Player_Stand;
+    public struct PlayerActions
+    {
+        private @CharacterInput m_Wrapper;
+        public PlayerActions(@CharacterInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_Player_Movement;
+        public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+        public InputAction @Shield => m_Wrapper.m_Player_Shield;
+        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
+        public InputAction @Throw => m_Wrapper.m_Player_Throw;
+        public InputAction @Stand => m_Wrapper.m_Player_Stand;
+        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerActions instance)
+        {
+            if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
+            {
+                @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Shoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @Shoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @Shoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @Shield.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShield;
+                @Shield.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShield;
+                @Shield.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShield;
+                @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Throw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Throw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Throw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Stand.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStand;
+                @Stand.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStand;
+                @Stand.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStand;
+            }
+            m_Wrapper.m_PlayerActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
+                @Shield.started += instance.OnShield;
+                @Shield.performed += instance.OnShield;
+                @Shield.canceled += instance.OnShield;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
+                @Throw.started += instance.OnThrow;
+                @Throw.performed += instance.OnThrow;
+                @Throw.canceled += instance.OnThrow;
+                @Stand.started += instance.OnStand;
+                @Stand.performed += instance.OnStand;
+                @Stand.canceled += instance.OnStand;
+            }
+        }
+    }
+    public PlayerActions @Player => new PlayerActions(this);
+    public interface IPlayerActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnShield(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
+        void OnStand(InputAction.CallbackContext context);
+    }
+}
+//player controller
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerController : MonoBehaviour
+{
+    private CharacterInput controls; // Our controls we defined
+    private Vector3 velocity; // To hold our current velocity
+    private Vector2 move; // To hold our move
+
+
+    private CharacterController controller; // Character controller
+
+    public float moveSpeed = 6f; // To calibrate our movement
+    public float jumpHeight = 2.4f; // To calibrate our jump
+    public float gravity = -9.81f; // To calibrate our gravity
+    public float crouchHeight = 1.4f;
+
+    public Transform ground; // Ground check empty goes in here
+    public float distanceToGround = 0.4f; // How close the ground needs to be to register
+    public LayerMask groundMask; // What layer is ground?
+
+    void Awake()
+    {
+        controls = new CharacterInput();
+        controller = GetComponent<CharacterController>();
+    }
+
+    void Update()
+    {
+        PlayerMovement();
+        Grav();
+        Jump();
+        Crouch();
+        Shield();
+        Throw();
+        
+    }
+
+    public float throwAmount;
+    public Camera fpsCam;
+    public GameObject bomb;
+
+
+    public Transform Player;
+
+    private bool HoldSword()
+    {
+        
+    }
+    
+
+    private void Throw()
+    {
+
+        if(controls.Player.Throw.triggered)
+        {
+            
+        }
+    }
+
+    
+
+    bool NotCrouch = true;
+    private void Crouch()
+    {
+        
+        CharacterController controller;
+        controller = GetComponent<CharacterController>();
+        Debug.Log(NotCrouch);
+        //height = 1.4f
+        if (controls.Player.Crouch.IsPressed() && NotCrouch && isGrounded())
+        {
+        
+                
+                controller.height = 1.4f;
+            NotCrouch = !NotCrouch;
+                
+            
+            
+            
+        }
+        else if (controls.Player.Crouch.IsPressed() == false && NotCrouch == false)
+        {
+            controller.height = 2.4f;
+            NotCrouch = !NotCrouch;
+        }
+    }
+    
+
+    private void Shield()
+    {
+
+    }
+
+    private void Grav()
+    {
+		if (isGrounded() && velocity.y < 0){
+			velocity.y = -2f;
+		}
+		
+		velocity.y += gravity * Time.deltaTime;
+		controller.Move(velocity * Time.deltaTime);
+    }
+
+
+    private bool isGrounded()
+    {
+		return Physics.CheckSphere(ground.position, distanceToGround, groundMask);
+    }
+
+    private void PlayerMovement()
+    {
+		move = controls.Player.Movement.ReadValue<Vector2>();
+		
+		Vector3 movement = (move.y * transform.forward) + (move.x * transform.right);
+		controller.Move(movement * moveSpeed * Time.deltaTime);
+    }
+
+    private void Jump()
+    {
+		if (controls.Player.Jump.triggered && isGrounded()){
+			velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+		}
+    }
+
+    void OnEnable()
+    {
+		controls.Enable();
+    }
+
+    void OnDisable()
+    {
+		controls.Disable();
+    }
+}
+//bombs
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class bombs : MonoBehaviour
+{
+    private CharacterInput controls;
+    public float damage = 30f;
+    public float radius = 4f;
+
+    public Camera fpsCam;
+
+    
+
+    private void Awake()
+    {
+        controls = new CharacterInput();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
+
+    void Update()
+    {
+     
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        if(Physics.CheckSphere(transform.position, radius))
+        {
+            
+            if(collision.transform.root.CompareTag("Enemy"))
+            {
+                Target enemy = gameObject.AddComponent<Target>();
+                if(enemy != null)
+                {
+                    enemy.TakeDamage(damage);
+                }
+            }
+        }
+
+        Destroy(gameObject);
+    }
+
+   
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+}
+//sword
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class sword : MonoBehaviour
+{
+    private CharacterInput controls;
+    public float damage = 10f;
+    public float range = 100f;
+
+    public Camera fpsCam;
+
+    private void Awake()
+    {
+        controls = new CharacterInput();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
+
+    void Update()
+    {
+        if (controls.Player.Shoot.triggered)
+        {
+            slash();
+        }
+    }
+
+    void slash()
+    {
+
+        //animation trigger here
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        {
+            Debug.Log(hit.transform.name);
+
+            Target enemy = hit.transform.GetComponent<Target>();
+
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+                
+            }
+        }
+    }
+  
+}
+//shield
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Shield : MonoBehaviour
+{
+
+    private CharacterInput controls;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+
+
+    }
+
+    void Block()
+    {
+        if(true)
+        {
+            //nagate damage
+            //play block animation + sound
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(controls.Player.Shield.triggered)
+        {
+            Block();
+        }
+    }
+}
+//mouse look
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class MouseLook : MonoBehaviour
+{
+	private CharacterInput controls;
+	
+	public float mouseSensitivity = 100f;
+	private Vector2 mouseLook;
+	private float xRotation = 0f;
+	
+	public Transform playerBody;
+	
+	void Awake(){
+		controls = new CharacterInput();
+		
+		Cursor.lockState = CursorLockMode.Locked;
+	}
+
+    // Update is called once per frame
+    void Update()
+    {
+        mouseLook = controls.Player.Look.ReadValue<Vector2>();
+		
+		float mouseX = mouseLook.x * mouseSensitivity * Time.deltaTime;
+		float mouseY = mouseLook.y * mouseSensitivity * Time.deltaTime;
+		
+		xRotation -= mouseY;
+		xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+		
+		transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+		
+		playerBody.Rotate(Vector3.up * mouseX);
+    }
+	
+	void OnEnable(){
+		controls.Enable();
+	}
+	
+	void OnDisable(){
+		controls.Disable();
+	}
+}
+//collectible
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class collectible : MonoBehaviour
+{
+    bool hit = false;
+    public int scoreValue = 1;
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if(other.transform.root.CompareTag("Player"))
+        {
+            hit = true;
+            
+
+        }
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {Debug.Log("Hit " + hit);
+        if(hit == true)
+        {
+            GameManager.instance.ChangeScore(scoreValue);
+            Destroy(gameObject);
+        }
+    }
+}
+//new enenmy AI
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class newEnemyAI : MonoBehaviour
+{
+    Transform Player;
+    NavMeshAgent agent;
+
+    // Start is called before the first frame update
+    void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = 3f;
+        agent.stoppingDistance = 2.5f;
+
+        Player = GameObject.Find("Player").transform;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        agent.SetDestination(Player.position);
+    }
+}
+//enemy startup
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class EnemyStartup : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        Invoke("delayAddingScript", 1.5f);
+    }
+
+    void delayAddingScript()
+    {
+        gameObject.AddComponent<NavMeshAgent>();
+        gameObject.AddComponent<newEnemyAI>();
+
+        Destroy(GetComponent<Rigidbody>());
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+//game manager
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager instance;
+    public TextMeshProUGUI text;
+    int score;
+
+  
+    // Start is called before the first frame update
+    void Start()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
+
+    public void ChangeScore(int scoreIncrement)
+    {
+        score += scoreIncrement;
+        text.text = "Score: " + score.ToString();
+    }
+}
+//
